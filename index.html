@@ -118,6 +118,186 @@ body.mode-play .timer-card { border-color: var(--play-light); background: linear
 .thing-checkbox.checked { background: var(--success-bright); border-color: var(--success-bright); }
 .things-progress-fill { background: linear-gradient(90deg, var(--accent), var(--success-bright)); }
 
+/* ===== 全局快速添加浮窗 ===== */
+.quick-add-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 2000;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 15vh;
+  backdrop-filter: blur(4px);
+}
+.quick-add-overlay.show { display: flex; animation: fadeIn 0.2s ease-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.quick-add-box {
+  background: white;
+  border-radius: var(--radius);
+  padding: 24px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.quick-add-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.quick-add-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--accent-light);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  outline: none;
+  font-family: var(--font-sans);
+  transition: border-color 0.2s;
+}
+.quick-add-input:focus { border-color: var(--accent); }
+.quick-add-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.quick-add-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.quick-add-chip:hover, .quick-add-chip.active {
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  border-color: var(--accent);
+}
+.quick-add-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 12px;
+  text-align: right;
+}
+
+/* 浮动添加按钮 */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(91,138,114,0.3);
+  z-index: 100;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fab:hover { transform: scale(1.1) rotate(90deg); box-shadow: 0 6px 24px rgba(91,138,114,0.4); }
+
+/* ===== 番茄钟 ===== */
+.pomodoro-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.pomodoro-tab {
+  flex: 1;
+  padding: 8px;
+  text-align: center;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.pomodoro-tab.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.pomodoro-circle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 6px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  position: relative;
+  transition: border-color 0.3s;
+}
+.pomodoro-circle.work { border-color: var(--accent); }
+.pomodoro-circle.break { border-color: var(--play); }
+.pomodoro-time {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  font-weight: 700;
+}
+.pomodoro-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: -10px;
+  margin-bottom: 16px;
+}
+
+/* ===== 板块预设模板 ===== */
+.board-templates {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.board-template-chip {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid var(--accent-light);
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  transition: all 0.2s;
+}
+.board-template-chip:hover {
+  background: var(--accent);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* ===== 快捷键提示 ===== */
+.kbd-hint {
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: monospace;
+  color: var(--text-secondary);
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -1189,6 +1369,21 @@ label {
           工作 / 娱乐计时
           <span class="tag">目标 2:1</span>
         </div>
+        <div class="pomodoro-tabs">
+          <div class="pomodoro-tab active" onclick="switchTimerMode('normal')">普通计时</div>
+          <div class="pomodoro-tab" onclick="switchTimerMode('pomodoro')">番茄钟</div>
+        </div>
+        <div id="pomodoro-section" style="display:none;">
+          <div class="pomodoro-circle" id="pomodoro-circle">
+            <div class="pomodoro-time" id="pomodoro-time">25:00</div>
+          </div>
+          <div class="pomodoro-label" id="pomodoro-label">准备开始专注</div>
+          <div style="text-align:center;margin-bottom:16px;">
+            <button class="btn btn-primary btn-sm" onclick="pomodoroStart()" id="pomodoro-btn">开始专注</button>
+            <button class="btn btn-ghost btn-sm" onclick="pomodoroReset()">重置</button>
+          </div>
+        </div>
+        <div id="normal-timer-section">
         <div class="timer-display">
           <div class="timer-time" id="timer-current">00:00:00</div>
           <div class="timer-label" id="timer-status">未开始</div>
@@ -1196,6 +1391,7 @@ label {
         <div class="timer-buttons">
           <button class="timer-btn" id="btn-work" onclick="timerStart('work')">开始工作</button>
           <button class="timer-btn" id="btn-play" onclick="timerStart('play')">开始娱乐</button>
+        </div>
         </div>
         <div class="timer-stats">
           <div class="timer-stat">
@@ -1318,7 +1514,14 @@ label {
       <div class="admin-section">
         <div class="admin-section-title">板块管理</div>
         <div id="admin-boards"></div>
-        <button class="btn btn-primary" style="margin-top:12px;" onclick="addBoard()">+ 添加板块</button>
+        <button class="btn btn-primary" style="margin-top:12px;" onclick="addBoard()">+ 添加空白板块</button>
+        <div class="board-templates">
+          <span style="font-size:12px;color:var(--text-muted);align-self:center;">快速创建：</span>
+          <div class="board-template-chip" onclick="addBoardFromTemplate('reading')">📚 阅读</div>
+          <div class="board-template-chip" onclick="addBoardFromTemplate('finance')">💰 理财</div>
+          <div class="board-template-chip" onclick="addBoardFromTemplate('exam')">📝 备考</div>
+          <div class="board-template-chip" onclick="addBoardFromTemplate('job')">💼 找工作</div>
+        </div>
       </div>
 
       <!-- 倒计时管理 -->
@@ -1404,6 +1607,19 @@ label {
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- 全局快速添加浮窗 -->
+<div class="quick-add-overlay" id="quick-add-overlay" onclick="if(event.target===this)closeQuickAdd()">
+  <div class="quick-add-box">
+    <div class="quick-add-title">快速添加</div>
+    <input type="text" class="quick-add-input" id="quick-add-input" placeholder="输入待办事项，回车添加..." onkeydown="quickAddKeydown(event)">
+    <div class="quick-add-actions" id="quick-add-targets"></div>
+    <div class="quick-add-hint">按 <span class="kbd-hint">N</span> 打开 · <span class="kbd-hint">Esc</span> 关闭 · <span class="kbd-hint">Enter</span> 添加</div>
+  </div>
+</div>
+
+<!-- 浮动添加按钮 -->
+<button class="fab" id="fab" onclick="openQuickAdd()" title="快速添加 (N)">+</button>
 
 <script>
 /* ===== 数据层 ===== */
@@ -1809,6 +2025,74 @@ function updateTimerMode() {
   document.body.classList.remove('mode-work', 'mode-play');
   if (data.timer.current === 'work') document.body.classList.add('mode-work');
   if (data.timer.current === 'play') document.body.classList.add('mode-play');
+}
+
+/* ===== 番茄钟 ===== */
+let pomodoroInterval = null;
+let pomodoroState = { mode: 'work', timeLeft: 25*60, running: false };
+
+function switchTimerMode(mode) {
+  document.querySelectorAll('.pomodoro-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  if (mode === 'pomodoro') {
+    document.getElementById('pomodoro-section').style.display = 'block';
+    document.getElementById('normal-timer-section').style.display = 'none';
+  } else {
+    document.getElementById('pomodoro-section').style.display = 'none';
+    document.getElementById('normal-timer-section').style.display = 'block';
+  }
+}
+
+function pomodoroStart() {
+  if (pomodoroState.running) {
+    // 暂停
+    pomodoroState.running = false;
+    clearInterval(pomodoroInterval);
+    document.getElementById('pomodoro-btn').textContent = '继续';
+  } else {
+    pomodoroState.running = true;
+    document.getElementById('pomodoro-btn').textContent = '暂停';
+    const circle = document.getElementById('pomodoro-circle');
+    circle.className = 'pomodoro-circle ' + (pomodoroState.mode === 'work' ? 'work' : 'break');
+    document.getElementById('pomodoro-label').textContent = pomodoroState.mode === 'work' ? '专注中...' : '休息中...';
+    document.body.classList.add(pomodoroState.mode === 'work' ? 'mode-work' : 'mode-play');
+
+    pomodoroInterval = setInterval(() => {
+      pomodoroState.timeLeft--;
+      if (pomodoroState.timeLeft <= 0) {
+        clearInterval(pomodoroInterval);
+        pomodoroState.running = false;
+        // 切换模式
+        if (pomodoroState.mode === 'work') {
+          pomodoroState.mode = 'break';
+          pomodoroState.timeLeft = 5*60;
+          document.getElementById('pomodoro-label').textContent = '专注完成！该休息了';
+          toast('🎉 25分钟专注完成！休息5分钟吧');
+        } else {
+          pomodoroState.mode = 'work';
+          pomodoroState.timeLeft = 25*60;
+          document.getElementById('pomodoro-label').textContent = '休息结束！继续加油';
+          toast('☕ 休息结束，开始下一轮专注');
+        }
+        document.body.classList.remove('mode-work', 'mode-play');
+        document.getElementById('pomodoro-btn').textContent = '开始' + (pomodoroState.mode === 'work' ? '专注' : '休息');
+        circle.className = 'pomodoro-circle';
+      }
+      const m = Math.floor(pomodoroState.timeLeft / 60);
+      const s = pomodoroState.timeLeft % 60;
+      document.getElementById('pomodoro-time').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }, 1000);
+  }
+}
+
+function pomodoroReset() {
+  clearInterval(pomodoroInterval);
+  pomodoroState = { mode: 'work', timeLeft: 25*60, running: false };
+  document.getElementById('pomodoro-time').textContent = '25:00';
+  document.getElementById('pomodoro-label').textContent = '准备开始专注';
+  document.getElementById('pomodoro-btn').textContent = '开始专注';
+  document.getElementById('pomodoro-circle').className = 'pomodoro-circle';
+  document.body.classList.remove('mode-work', 'mode-play');
 }
 
 function updateTimerDisplay() {
@@ -2501,6 +2785,161 @@ function clearAllData() {
   renderAll();
   toast('已重置为默认数据');
 }
+
+/* ===== 全局快速添加 ===== */
+let quickAddTarget = 'things';
+
+function openQuickAdd() {
+  document.getElementById('quick-add-overlay').classList.add('show');
+  // 渲染可选目标
+  const targets = [
+    { id: 'things', name: '今日三件事' },
+    ...data.boards.map((b, i) => ({ id: 'board-' + i, name: b.icon + ' ' + b.name }))
+  ];
+  document.getElementById('quick-add-targets').innerHTML = targets.map(t =>
+    `<div class="quick-add-chip ${t.id === quickAddTarget ? 'active' : ''}" onclick="selectQuickAddTarget('${t.id}', this)">${t.name}</div>`
+  ).join('');
+  setTimeout(() => document.getElementById('quick-add-input').focus(), 100);
+}
+
+function closeQuickAdd() {
+  document.getElementById('quick-add-overlay').classList.remove('show');
+  document.getElementById('quick-add-input').value = '';
+}
+
+function selectQuickAddTarget(id, el) {
+  quickAddTarget = id;
+  document.querySelectorAll('.quick-add-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function quickAddKeydown(e) {
+  if (e.key === 'Escape') { closeQuickAdd(); return; }
+  if (e.key === 'Enter') {
+    const text = e.target.value.trim();
+    if (!text) return;
+    if (quickAddTarget === 'things') {
+      if (data.threeThings.length >= 3) {
+        // 替换最后一个未完成的，或提示
+        data.threeThings.push({ text, done: false, time: '' });
+      } else {
+        data.threeThings.push({ text, done: false, time: '' });
+      }
+    } else if (quickAddTarget.startsWith('board-')) {
+      const bi = parseInt(quickAddTarget.split('-')[1]);
+      const board = data.boards[bi];
+      // 找到第一个todo积木，没有就创建
+      let todoBlock = board.blocks.find(b => b.type === 'todo');
+      if (!todoBlock) {
+        todoBlock = { type: 'todo', id: uid(), groups: [{ name: '今天', items: [] }] };
+        board.blocks.push(todoBlock);
+      }
+      let group = todoBlock.groups.find(g => g.name === '今天');
+      if (!group) { group = { name: '今天', items: [] }; todoBlock.groups.unshift(group); }
+      group.items.push({ text, done: false });
+    }
+    saveData();
+    renderAll();
+    toast('已添加：' + text);
+    e.target.value = '';
+  }
+}
+
+/* ===== 板块预设模板 ===== */
+function addBoardFromTemplate(type) {
+  const templates = {
+    reading: {
+      name: '阅读', icon: '📚', color: '#8B6F47', desc: '读书笔记 + 阅读计划',
+      blocks: [
+        { type: 'goal', id: uid(), goalName: '年度阅读目标', deadline: '2026-12-31', progress: 0,
+          milestones: [{ name: '已读书籍', pct: 0 }], reviews: [] },
+        { type: 'todo', id: uid(), groups: [
+          { name: '在读', items: [{ text: '正在读的书', done: false }] },
+          { name: '想读', items: [{ text: '书单里的书', done: false }] }
+        ]},
+        { type: 'habit', id: uid(), habits: [{ name: '每日阅读30分钟', records: {} }] }
+      ]
+    },
+    finance: {
+      name: '理财', icon: '💰', color: '#C9A227', desc: '收支记录 + 理财学习',
+      blocks: [
+        { type: 'goal', id: uid(), goalName: '存款目标', deadline: '2026-12-31', progress: 0,
+          milestones: [{ name: '应急金', pct: 0 }, { name: '投资本金', pct: 0 }], reviews: [] },
+        { type: 'todo', id: uid(), groups: [
+          { name: '本月', items: [{ text: '记账复盘', done: false }, { text: '学习理财知识', done: false }] }
+        ]},
+        { type: 'habit', id: uid(), habits: [{ name: '每日记账', records: {} }] }
+      ]
+    },
+    exam: {
+      name: '备考', icon: '📝', color: '#5B7BA0', desc: '考试倒计时 + 复习进度',
+      blocks: [
+        { type: 'goal', id: uid(), goalName: '考试目标', deadline: '2026-12-12', progress: 0,
+          milestones: [{ name: '一轮复习', pct: 0 }, { name: '二轮复习', pct: 0 }, { name: '真题模拟', pct: 0 }], reviews: [] },
+        { type: 'todo', id: uid(), groups: [
+          { name: '今天', items: [{ text: '复习任务1', done: false }] }
+        ]},
+        { type: 'habit', id: uid(), habits: [{ name: '每日学习', records: {} }] }
+      ]
+    },
+    job: {
+      name: '找工作', icon: '💼', color: '#6B5B8A', desc: '投递记录 + 面试准备',
+      blocks: [
+        { type: 'goal', id: uid(), goalName: '拿到offer', deadline: '2027-04-10', progress: 0,
+          milestones: [{ name: '简历优化', pct: 0 }, { name: '投递公司', pct: 0 }, { name: '面试准备', pct: 0 }], reviews: [] },
+        { type: 'todo', id: uid(), groups: [
+          { name: '待投递', items: [{ text: '目标公司1', done: false }] },
+          { name: '面试中', items: [] }
+        ]},
+        { type: 'habit', id: uid(), habits: [{ name: '每日投递', records: {} }] }
+      ]
+    }
+  };
+  const t = templates[type];
+  if (!t) return;
+  data.boards.push({ id: uid(), ...t });
+  saveData();
+  renderAdmin();
+  renderSidebarBoards();
+  toast('已创建' + t.name + '板块');
+}
+
+/* ===== 键盘快捷键 ===== */
+document.addEventListener('keydown', (e) => {
+  // 输入框中不触发
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+  // N - 快速添加
+  if (e.key === 'n' || e.key === 'N') {
+    e.preventDefault();
+    openQuickAdd();
+    return;
+  }
+  // D - 日记
+  if (e.key === 'd' || e.key === 'D') {
+    e.preventDefault();
+    switchView('diary');
+    return;
+  }
+  // 1/2/3 - 勾选三件事
+  if (['1','2','3'].includes(e.key)) {
+    const idx = parseInt(e.key) - 1;
+    if (idx < data.threeThings.length) {
+      e.preventDefault();
+      toggleThing(idx);
+    }
+    return;
+  }
+  // Space - 开始/暂停工作计时
+  if (e.key === ' ') {
+    e.preventDefault();
+    timerStart('work');
+    return;
+  }
+  // Esc - 关闭快速添加
+  if (e.key === 'Escape') {
+    closeQuickAdd();
+  }
+});
 
 /* ===== 初始化 ===== */
 function renderAll() {
