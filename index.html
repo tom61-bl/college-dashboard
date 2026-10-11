@@ -1056,6 +1056,284 @@ label {
 .mood-option:hover { border-color: var(--accent); }
 .mood-option.selected { background: var(--accent-light); border-color: var(--accent); color: var(--accent-dark); font-weight: 500; }
 
+/* ===== 项目管理 ===== */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.project-card {
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.project-card .proj-category {
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.7;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.project-card .proj-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.project-card .proj-next {
+  font-size: 13px;
+  line-height: 1.6;
+  opacity: 0.85;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.project-card .proj-next-label {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+
+.project-card .proj-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 8px;
+}
+
+.project-card .proj-progress-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.project-card .proj-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: rgba(0,0,0,0.3);
+  transition: width 0.3s;
+}
+
+.project-card .proj-progress-text {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 6px;
+  opacity: 0.8;
+}
+
+/* ===== 甘特图 ===== */
+.gantt-container {
+  min-width: 700px;
+  padding: 10px 0;
+}
+
+.gantt-header {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.gantt-label-col {
+  width: 140px;
+  min-width: 140px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  padding-right: 12px;
+}
+
+.gantt-dates {
+  flex: 1;
+  display: flex;
+}
+
+.gantt-date {
+  flex: 1;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  min-width: 40px;
+}
+
+.gantt-date.today { color: var(--accent); font-weight: 700; }
+
+.gantt-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--bg);
+  position: relative;
+  min-height: 44px;
+}
+
+.gantt-row-name {
+  width: 140px;
+  min-width: 140px;
+  font-size: 13px;
+  font-weight: 500;
+  padding-right: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gantt-row-track {
+  flex: 1;
+  position: relative;
+  height: 28px;
+}
+
+.gantt-bar {
+  position: absolute;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.gantt-bar:hover { opacity: 0.85; }
+
+.gantt-today-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #E8923C;
+  z-index: 2;
+}
+
+.gantt-today-line::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #E8923C;
+}
+
+/* ===== 弹窗 ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  width: 90%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.form-row .form-group { flex: 1; }
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--text);
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-group input[type="range"] {
+  padding: 0;
+  accent-color: var(--accent);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.color-picker {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: transform 0.15s;
+}
+
+.color-swatch:hover { transform: scale(1.15); }
+.color-swatch.selected { border-color: var(--text); }
+
 /* ===== 后台 ===== */
 .admin-section { margin-bottom: 28px; }
 .admin-section-title {
@@ -1323,6 +1601,14 @@ label {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         每日日记
       </div>
+      <div class="nav-item" data-view="projects">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        项目管理
+      </div>
+      <div class="nav-item" data-view="timeline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/></svg>
+        项目时间轴
+      </div>
     </div>
 
     <div class="nav-divider"></div>
@@ -1499,6 +1785,88 @@ label {
             <div class="mood-option" data-mood="🤔 思考" onclick="selectMood(this)">🤔 思考</div>
             <div class="mood-option" data-mood="💪 充实" onclick="selectMood(this)">💪 充实</div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 视图：项目管理 ===== -->
+    <div class="view" id="view-projects">
+      <h1 class="page-title">把复杂生活，装进清晰项目</h1>
+      <p class="page-subtitle">每个项目都只保留一个明确的"下一步"</p>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--accent);letter-spacing:1px;margin-bottom:4px;">MY WORLDS</div>
+          <div style="font-size:22px;font-weight:700;color:var(--text);">我正在经营的几件大事</div>
+        </div>
+        <button class="btn btn-primary" onclick="openProjectModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          新建项目
+        </button>
+      </div>
+
+      <div class="projects-grid" id="projects-grid"></div>
+    </div>
+
+    <!-- ===== 视图：时间轴 ===== -->
+    <div class="view" id="view-timeline">
+      <h1 class="page-title">抬头看看，时间正在往哪里走</h1>
+      <p class="page-subtitle">看见正在进行的项目，以及越来越近的 Deadline</p>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--accent);letter-spacing:1px;margin-bottom:4px;">TIMELINE</div>
+          <div style="font-size:22px;font-weight:700;color:var(--text);">项目时间轴</div>
+        </div>
+        <div style="display:flex;gap:16px;font-size:12px;color:var(--text-secondary);">
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#E8923C;display:inline-block;"></span>今天</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--text);display:inline-block;"></span>截止日</span>
+        </div>
+      </div>
+
+      <div class="card" style="overflow-x:auto;">
+        <div class="gantt-container" id="gantt-container"></div>
+      </div>
+    </div>
+
+    <!-- ===== 项目编辑弹窗 ===== -->
+    <div class="modal-overlay" id="project-modal" onclick="if(event.target===this)closeProjectModal()">
+      <div class="modal">
+        <div class="modal-title" id="project-modal-title">新建项目</div>
+        <div class="form-group">
+          <label>项目名称</label>
+          <input type="text" id="proj-name" placeholder="比如：六级考试">
+        </div>
+        <div class="form-group">
+          <label>分类</label>
+          <input type="text" id="proj-category" placeholder="比如：备考 / 个人发展 / 职业">
+        </div>
+        <div class="form-group">
+          <label>下一步行动 <span style="color:var(--text-muted);font-size:12px;">（GTD：只保留一个明确的下一步）</span></label>
+          <input type="text" id="proj-next" placeholder="比如：完成听力真题第一套并对答案">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>开始日期</label>
+            <input type="date" id="proj-start">
+          </div>
+          <div class="form-group">
+            <label>截止日期</label>
+            <input type="date" id="proj-deadline">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>完成进度：<span id="proj-progress-val">0</span>%</label>
+          <input type="range" id="proj-progress" min="0" max="100" value="0" oninput="document.getElementById('proj-progress-val').textContent=this.value">
+        </div>
+        <div class="form-group">
+          <label>卡片颜色</label>
+          <div class="color-picker" id="proj-color-picker"></div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="closeProjectModal()">取消</button>
+          <button class="btn btn-danger" id="proj-delete-btn" onclick="deleteProject()" style="display:none;">删除</button>
+          <button class="btn btn-primary" onclick="saveProject()">保存</button>
         </div>
       </div>
     </div>
@@ -1742,7 +2110,12 @@ function getDefaultData() {
       current: null,
       startTime: null
     },
-    history: {}
+    history: {},
+    projects: [
+      { id: 'p1', name: '六级考试', category: '备考', nextAction: '完成听力真题第一套并对答案', startDate: '2026-09-01', deadline: '2026-12-12', progress: 25, color: '#5B8A72' },
+      { id: 'p2', name: '实习结束', category: '职业', nextAction: '整理ICU轮转出科考点', startDate: '2026-07-01', deadline: '2027-04-11', progress: 60, color: '#E8923C' },
+      { id: 'p3', name: 'AI 项目探索', category: '个人发展', nextAction: '完成工作台的项目管理功能', startDate: '2026-10-01', deadline: '2026-12-31', progress: 40, color: '#5B8BA0' }
+    ]
   };
 }
 
@@ -1760,6 +2133,8 @@ function loadData() {
       const today = formatDate(new Date());
       // 确保history存在
       if (!d.history) d.history = {};
+      // 确保projects存在
+      if (!d.projects) d.projects = [];
       // 如果timer日期不是今天，先归档前一天数据再重置
       if (d.timer && d.timer.date !== today) {
         const prevDate = d.timer.date;
@@ -1844,6 +2219,8 @@ function switchView(view, boardIndex) {
   if (view === 'overview') renderOverview();
   if (view === 'diary') renderDiary();
   if (view === 'admin') renderAdmin();
+  if (view === 'projects') renderProjects();
+  if (view === 'timeline') renderTimeline();
   window.scrollTo(0,0);
 }
 
@@ -3085,6 +3462,192 @@ if (data.timer.current && data.timer.startTime) {
   timerInterval = setInterval(updateTimerDisplay, 1000);
 }
 updateTimerMode();
+
+/* ===== 项目管理 ===== */
+const PROJECT_COLORS = ['#F5C542', '#F48FB1', '#4DD0C4', '#B388FF', '#64B5F6', '#81C784', '#FF8A65', '#A1887F'];
+let editingProjectId = null;
+let selectedProjColor = PROJECT_COLORS[0];
+
+function renderProjects() {
+  const grid = document.getElementById('projects-grid');
+  if (!data.projects || data.projects.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-muted);"><div style="font-size:40px;margin-bottom:12px;">📋</div><div style="font-size:15px;margin-bottom:8px;">还没有项目</div><div style="font-size:13px;">把你正在经营的大事加进来，每个项目只留一个"下一步"</div></div>';
+    return;
+  }
+  grid.innerHTML = data.projects.map(p => {
+    const daysLeft = Math.ceil((new Date(p.deadline) - new Date()) / (1000*60*60*24));
+    const daysText = daysLeft > 0 ? `${daysLeft}天后截止` : (daysLeft === 0 ? '今天截止' : `已逾期${-daysLeft}天`);
+    const startStr = p.startDate ? p.startDate.substring(5).replace('-','月') + '日开始' : '';
+    return `
+      <div class="project-card" style="background:${p.color};color:#fff;" onclick="openProjectModal('${p.id}')">
+        <div class="proj-category">${p.category || '未分类'}</div>
+        <div class="proj-name">${p.name}</div>
+        <div class="proj-next-label">下一步</div>
+        <div class="proj-next">${p.nextAction || '（未设置）'}</div>
+        <div class="proj-meta">
+          <span>${startStr}</span>
+          <span>${daysText}</span>
+        </div>
+        <div class="proj-progress-bar"><div class="proj-progress-fill" style="width:${p.progress || 0}%"></div></div>
+        <div class="proj-progress-text">${p.progress || 0}% 完成</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderTimeline() {
+  const container = document.getElementById('gantt-container');
+  const projects = data.projects || [];
+  if (projects.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);">暂无项目</div>';
+    return;
+  }
+
+  // 计算时间范围：最早开始到最晚截止，前后各延3天
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  let minDate = new Date(Math.min(...projects.map(p => new Date(p.startDate || p.deadline))));
+  let maxDate = new Date(Math.max(...projects.map(p => new Date(p.deadline))));
+  minDate.setDate(minDate.getDate() - 2);
+  maxDate.setDate(maxDate.getDate() + 2);
+  const totalDays = Math.ceil((maxDate - minDate) / (1000*60*60*24)) + 1;
+
+  // 生成日期头
+  let datesHtml = '';
+  const todayIndex = Math.floor((today - minDate) / (1000*60*60*24));
+  for (let i = 0; i < totalDays; i++) {
+    const d = new Date(minDate);
+    d.setDate(d.getDate() + i);
+    const isToday = i === todayIndex;
+    datesHtml += `<div class="gantt-date ${isToday ? 'today' : ''}">${d.getDate()}<br><span style="font-size:10px;">${['日','一','二','三','四','五','六'][d.getDay()]}</span></div>`;
+  }
+
+  // 生成项目行
+  let rowsHtml = projects.map(p => {
+    const start = new Date(p.startDate || p.deadline);
+    const end = new Date(p.deadline);
+    const startOffset = Math.floor((start - minDate) / (1000*60*60*24));
+    const duration = Math.max(1, Math.ceil((end - start) / (1000*60*60*24)) + 1);
+    const leftPct = (startOffset / totalDays) * 100;
+    const widthPct = (duration / totalDays) * 100;
+    return `
+      <div class="gantt-row">
+        <div class="gantt-row-name" title="${p.name}">${p.name}</div>
+        <div class="gantt-row-track">
+          <div class="gantt-bar" style="left:${leftPct}%;width:${widthPct}%;background:${p.color};" onclick="openProjectModal('${p.id}')" title="${p.name}：${p.deadline}截止">
+            ${p.deadline.substring(5).replace('-','月')}日截止
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // 今天的竖线位置
+  const todayLeftPct = todayIndex >= 0 && todayIndex < totalDays ? ((todayIndex + 0.5) / totalDays) * 100 : null;
+
+  container.innerHTML = `
+    <div class="gantt-header">
+      <div class="gantt-label-col">项目</div>
+      <div class="gantt-dates">${datesHtml}</div>
+    </div>
+    <div style="position:relative;">
+      ${todayLeftPct ? `<div class="gantt-today-line" style="left:calc(140px + ${todayLeftPct}% - 1px);"></div>` : ''}
+      ${rowsHtml}
+    </div>
+  `;
+}
+
+function openProjectModal(id) {
+  editingProjectId = id || null;
+  const modal = document.getElementById('project-modal');
+  const title = document.getElementById('project-modal-title');
+  const deleteBtn = document.getElementById('proj-delete-btn');
+
+  if (id) {
+    const p = data.projects.find(x => x.id === id);
+    if (!p) return;
+    title.textContent = '编辑项目';
+    deleteBtn.style.display = 'inline-block';
+    document.getElementById('proj-name').value = p.name;
+    document.getElementById('proj-category').value = p.category || '';
+    document.getElementById('proj-next').value = p.nextAction || '';
+    document.getElementById('proj-start').value = p.startDate || '';
+    document.getElementById('proj-deadline').value = p.deadline || '';
+    document.getElementById('proj-progress').value = p.progress || 0;
+    document.getElementById('proj-progress-val').textContent = p.progress || 0;
+    selectedProjColor = p.color || PROJECT_COLORS[0];
+  } else {
+    title.textContent = '新建项目';
+    deleteBtn.style.display = 'none';
+    document.getElementById('proj-name').value = '';
+    document.getElementById('proj-category').value = '';
+    document.getElementById('proj-next').value = '';
+    document.getElementById('proj-start').value = formatDate(new Date());
+    document.getElementById('proj-deadline').value = '';
+    document.getElementById('proj-progress').value = 0;
+    document.getElementById('proj-progress-val').textContent = '0';
+    selectedProjColor = PROJECT_COLORS[Math.floor(Math.random() * PROJECT_COLORS.length)];
+  }
+
+  renderColorPicker();
+  modal.classList.add('active');
+}
+
+function closeProjectModal() {
+  document.getElementById('project-modal').classList.remove('active');
+  editingProjectId = null;
+}
+
+function renderColorPicker() {
+  const picker = document.getElementById('proj-color-picker');
+  picker.innerHTML = PROJECT_COLORS.map(c =>
+    `<div class="color-swatch ${c === selectedProjColor ? 'selected' : ''}" style="background:${c};" onclick="selectedProjColor='${c}';renderColorPicker();"></div>`
+  ).join('');
+}
+
+function saveProject() {
+  const name = document.getElementById('proj-name').value.trim();
+  if (!name) { toast('项目名称不能为空'); return; }
+  const deadline = document.getElementById('proj-deadline').value;
+  if (!deadline) { toast('请设置截止日期'); return; }
+
+  const projectData = {
+    name,
+    category: document.getElementById('proj-category').value.trim(),
+    nextAction: document.getElementById('proj-next').value.trim(),
+    startDate: document.getElementById('proj-start').value,
+    deadline,
+    progress: parseInt(document.getElementById('proj-progress').value) || 0,
+    color: selectedProjColor
+  };
+
+  if (editingProjectId) {
+    const idx = data.projects.findIndex(p => p.id === editingProjectId);
+    if (idx >= 0) data.projects[idx] = { ...data.projects[idx], ...projectData };
+    toast('项目已更新');
+  } else {
+    projectData.id = 'p' + Date.now();
+    if (!data.projects) data.projects = [];
+    data.projects.push(projectData);
+    toast('项目已创建');
+  }
+
+  saveData();
+  closeProjectModal();
+  if (currentView === 'projects') renderProjects();
+  if (currentView === 'timeline') renderTimeline();
+}
+
+function deleteProject() {
+  if (!editingProjectId) return;
+  if (!confirm('确定删除这个项目吗？')) return;
+  data.projects = data.projects.filter(p => p.id !== editingProjectId);
+  saveData();
+  closeProjectModal();
+  if (currentView === 'projects') renderProjects();
+  if (currentView === 'timeline') renderTimeline();
+  toast('项目已删除');
+}
 
 renderAll();
 </script>
