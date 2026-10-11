@@ -1463,6 +1463,10 @@ label {
           <button onclick="diaryNav(1)">&#8250;</button>
         </div>
         <button class="btn btn-ghost btn-sm" onclick="diaryToday()">回到今天</button>
+        <button class="btn btn-primary btn-sm" onclick="exportToObsidian()" title="导出当天日记为 .md 到 Obsidian 文件夹">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          导出 Obsidian
+        </button>
       </div>
 
       <div class="card">
@@ -2522,6 +2526,123 @@ function selectMood(el) {
   }
   saveData();
   renderDiary();
+}
+
+/* ===== 导出到 Obsidian ===== */
+function generateDiaryMarkdown(date) {
+  const entry = data.diary[date] || { done: '', plan: '', mood: '' };
+  const hist = data.history[date] || { thingsDone: 0, thingsTotal: 3, workMin: 0, playMin: 0, mood: '' };
+  const things = data.threeThings || [];
+  const d = new Date(date + 'T00:00:00');
+  const weekday = ['周日','周一','周二','周三','周四','周五','周六'][d.getDay()];
+  
+  let md = `# ${date} ${weekday} 日记\n\n`;
+  
+  // 三件事
+  md += `## 今日三件事\n`;
+  things.forEach((t, i) => {
+    const checked = i < (hist.thingsDone || 0);
+    md += `- [${checked ? 'x' : ' '}] ${t.text || t}\n`;
+  });
+  md += `\n`;
+  
+  // 今天做了什么
+  md += `## 今天做了什么\n${entry.done || '（未填写）'}\n\n`;
+  
+  // 明天计划
+  md += `## 明天计划\n${entry.plan || '（未填写）'}\n\n`;
+  
+  // 心情
+  md += `## 心情\n${entry.mood || hist.mood || '（未记录）'}\n\n`;
+  
+  // 今日数据
+  const workH = ((hist.workMin || 0) / 60).toFixed(1);
+  const playH = ((hist.playMin || 0) / 60).toFixed(1);
+  md += `## 今日数据\n`;
+  md += `- 工作时长：${workH}h\n`;
+  md += `- 娱乐时长：${playH}h\n`;
+  if (hist.workMin > 0 && hist.playMin > 0) {
+    const ratio = (hist.workMin / hist.playMin).toFixed(1);
+    md += `- 工作/娱乐比：${ratio}:1\n`;
+  }
+  md += `- 三件事完成：${hist.thingsDone || 0}/${hist.thingsTotal || 3}\n`;
+  
+  // 打卡情况
+  const checkins = [];
+  data.boards.forEach(b => {
+    if (b.blocks) {
+      b.blocks.forEach(bl => {
+        if (bl.type === 'checkin' && bl.items) {
+          bl.items.forEach(item => {
+            if (item.dates && item.dates.includes(date)) {
+              checkins.push(`${b.name} - ${item.name}`);
+            }
+          });
+        }
+      });
+    }
+  });
+  if (checkins.length > 0) {
+    md += `\n## 今日打卡\n`;
+    checkins.forEach(c => md += `- ✓ ${c}\n`);
+  }
+  
+  md += `\n---\n*由大学生工作台自动导出 · ${new Date().toLocaleString('zh-CN')}*\n`;
+  return md;
+}
+
+async function exportToObsidian() {
+  const md = generateDiaryMarkdown(diaryDate);
+  const filename = diaryDate + '.md';
+  
+  // 尝试用记住的文件夹句柄
+  if (window._obsidianDirHandle) {
+    try {
+      const fileHandle = await window._obsidianDirHandle.getFileHandle(filename, { create: true });
+      const writable = await fileHandle.createWritable();
+      await writable.write(md);
+      await writable.close();
+      toast('已导出到 Obsidian：' + filename);
+      return;
+    } catch(e) {
+      // 权限失效或其他错误，重新选择
+      window._obsidianDirHandle = null;
+    }
+  }
+  
+  // 选择文件夹（File System Access API，Chrome/Edge 支持）
+  if ('showDirectoryPicker' in window) {
+    try {
+      const dirHandle = await showDirectoryPicker({
+        id: 'obsidian-vault',
+        mode: 'readwrite'
+      });
+      window._obsidianDirHandle = dirHandle;
+      const fileHandle = await dirHandle.getFileHandle(filename, { create: true });
+      const writable = await fileHandle.createWritable();
+      await writable.write(md);
+      await writable.close();
+      toast('已导出到 Obsidian，文件夹已记住，下次一键导出');
+      return;
+    } catch(e) {
+      if (e.name === 'AbortError') {
+        return; // 用户取消了
+      }
+      console.error('Obsidian export failed:', e);
+    }
+  }
+  
+  // 降级：下载 .md 文件
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('已下载 ' + filename + '，放到 Obsidian 库文件夹即可');
 }
 
 function diaryNav(delta) {
