@@ -1785,6 +1785,12 @@ label {
             <div class="mood-option" data-mood="🤔 思考" onclick="selectMood(this)">🤔 思考</div>
             <div class="mood-option" data-mood="💪 充实" onclick="selectMood(this)">💪 充实</div>
           </div>
+        <div class="diary-box">
+          <div class="diary-box-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            自由日记 <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:6px;">想到什么写什么，不限字数</span>
+          </div>
+          <textarea id="diary-free" placeholder="今天发生了什么？有什么感受、思考、灵感？随便写，写多少都行..." style="min-height:180px;line-height:1.8;" oninput="saveDiary()"></textarea>
         </div>
       </div>
     </div>
@@ -2760,9 +2766,10 @@ function toggleHabit(boardIndex, bi, hi, dateStr) {
 /* ===== 日记 ===== */
 function renderDiary() {
   document.getElementById('diary-date-display').textContent = formatDateCN(new Date(diaryDate + 'T00:00:00'));
-  const entry = data.diary[diaryDate] || { done: '', plan: '', mood: '' };
+  const entry = data.diary[diaryDate] || { done: '', plan: '', mood: '', free: '' };
   document.getElementById('diary-done').value = entry.done || '';
   document.getElementById('diary-plan').value = entry.plan || '';
+  document.getElementById('diary-free').value = entry.free || '';
 
   document.querySelectorAll('.mood-option').forEach(el => {
     el.classList.toggle('selected', el.dataset.mood === entry.mood);
@@ -2874,9 +2881,10 @@ function renderWeeklyReview() {
 }
 
 function saveDiary() {
-  if (!data.diary[diaryDate]) data.diary[diaryDate] = { done: '', plan: '', mood: '' };
+  if (!data.diary[diaryDate]) data.diary[diaryDate] = { done: '', plan: '', mood: '', free: '' };
   data.diary[diaryDate].done = document.getElementById('diary-done').value;
   data.diary[diaryDate].plan = document.getElementById('diary-plan').value;
+  data.diary[diaryDate].free = document.getElementById('diary-free').value;
   // 同步到history
   const today = formatDate(new Date());
   if (diaryDate === today) {
@@ -2889,7 +2897,7 @@ function saveDiary() {
 
 function selectMood(el) {
   const mood = el.dataset.mood;
-  if (!data.diary[diaryDate]) data.diary[diaryDate] = { done: '', plan: '', mood: '' };
+  if (!data.diary[diaryDate]) data.diary[diaryDate] = { done: '', plan: '', mood: '', free: '' };
   if (data.diary[diaryDate].mood === mood) {
     data.diary[diaryDate].mood = '';
   } else {
@@ -2928,6 +2936,11 @@ function generateDiaryMarkdown(date) {
   
   // 明天计划
   md += `## 明天计划\n${entry.plan || '（未填写）'}\n\n`;
+  
+  // 自由日记
+  if (entry.free) {
+    md += `## 自由日记\n${entry.free}\n\n`;
+  }
   
   // 心情
   md += `## 心情\n${entry.mood || hist.mood || '（未记录）'}\n\n`;
